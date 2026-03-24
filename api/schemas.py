@@ -45,3 +45,16 @@ class AnalisisResponse(BaseModel):
     clasificacion: str
     probabilidades: Dict[str, float]
     status: str = "Datos procesados e indexados correctamente."
+    
+
+class MencionLectura(BaseModel):
+    id: int
+    fecha_ingesta: datetime
+    candidato_principal: Optional[str]
+    sentimiento_ia: str
+    fuente_nombre: str
+    texto_original: str
+    entidades_json: Optional[Dict[str, List[str]]]
+
+    # Esto le dice a Pydantic que lea directamente desde el modelo de SQLAlchemy
+    model_config = {"from_attributes": True}
