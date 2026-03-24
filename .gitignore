@@ -1,0 +1,19 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Variables de entorno (¡CRÍTICO PARA SEGURIDAD!)
+.env
+
+# Caché de Python (Evita subir basura de compilación)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caché de modelos de Machine Learning
+.huggingface/
+.cache/
+
+# Configuración de tu editor (VS Code)
+.vscode/
