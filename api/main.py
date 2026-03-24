@@ -104,12 +104,14 @@ class MLManager:
                 print("🚨 ERROR: Modelo spaCy no encontrado.")
 
     def predict_sentiment(self, text: str):
+        self.load_model()
         if self.analyzer is None:
             raise RuntimeError("Modelo no cargado.")
         resultado = self.analyzer.predict(text)
         return {"clasificacion": resultado.output, "probas": resultado.probas}
 
     def extract_entities(self, text: str):
+        self.load_model()
         if self.nlp is None:
             return {"personas": [], "organizaciones": [], "lugares": []}
         doc = self.nlp(text)
@@ -118,6 +120,7 @@ class MLManager:
             "organizaciones": list(set([ent.text for ent in doc.ents if ent.label_ == "ORG"])),
             "lugares": list(set([ent.text for ent in doc.ents if ent.label_ == "LOC"]))
         }
+
 
 ml_manager = MLManager()
 
@@ -183,7 +186,7 @@ async def lifespan(app: FastAPI):
     if engine:
         Base.metadata.create_all(bind=engine)
         print("🗄️ Base de datos conectada y sincronizada.")
-    ml_manager.load_model()
+    # ml_manager.load_model()
     yield 
     print("🛑 Apagando API... Limpiando memoria.")
 
