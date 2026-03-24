@@ -6,7 +6,7 @@
 
 ## 🧭 Guideline: Arquitectura de la API "Data Engine"
 
-El objetivo ahora es que tu API sea la "fuente de la verdad". Cualquier persona (o tú mismo en el futuro, si decides hacer un frontend en React o Vue) podrá conectarse a ella para extraer tanto datos crudos como análisis procesados por Machine Learning.
+El objetivo ahora es que la API sea la "fuente de la verdad". Cualquier persona (o tú mismo en el futuro, si decides hacer un frontend en React o Vue) podrá conectarse a ella para extraer tanto datos crudos como análisis procesados por Machine Learning.
 
 ### 1. Reestructuración Modular (FastAPI Routers)
 Vamos a abandonar el archivo `main.py` gigante. FastAPI brilla cuando divides tu aplicación en "mini-APIs" usando `APIRouter`. 
@@ -44,7 +44,28 @@ Para que tengas una visión clara de lo que vamos a construir, así se verá tu 
 * `POST /admin/sync-fuentes` (Dispara el scraper en background).
 
 ---
+---
 
-Este es un backend robusto, escalable y profesional.
+# strc
 
-¿Quieres que empecemos por crear la estructura de carpetas y el archivo `main.py` usando la arquitectura de **Routers y Lifespan** para gestionar el modelo de ML correctamente?
+📁 colombia_elecciones_tracker/
+├── 📄 LICENSE                 (Licencia MIT)
+├── 📄 requirements.txt        (Dependencias)
+├── 📁 scraper/                (Tu motor de extracción actual - Intacto)
+│   ├── run_worker.py
+│   └── rss_parser.py
+└── 📁 api/                    (El nuevo Data Engine)
+    ├── 📄 main.py             (Punto de entrada, Metadatos y Lifespan)
+    ├── 📄 database.py         (Conexión a Supabase)
+    ├── 📄 models.py           (Modelos SQLAlchemy - Base de datos)
+    ├── 📄 schemas.py          (Modelos Pydantic - Validaciones y Swagger)
+    ├── 📁 core/               (Configuraciones y gestores pesados)
+    │   ├── 📄 __init__.py
+    │   ├── 📄 config.py       (Variables de entorno)
+    │   └── 📄 ml_manager.py   (Cargador del modelo pysentimiento)
+    └── 📁 routers/            (Endpoints divididos por dominio)
+        ├── 📄 __init__.py
+        ├── 📄 data_raw.py     (Consultas directas a la DB)
+        ├── 📄 ml_engine.py    (Inferencia de IA en tiempo real)
+        ├── 📄 insights.py     (Agrupaciones y estadísticas)
+        └── 📄 admin.py        (Disparadores de tareas de fondo)
